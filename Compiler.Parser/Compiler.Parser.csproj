@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Compiler.Core\Compiler.Core.csproj" />
+    <ProjectReference Include="..\Compiler.Lexer\Compiler.Lexer.csproj" />
+  </ItemGroup>
+
+</Project>
