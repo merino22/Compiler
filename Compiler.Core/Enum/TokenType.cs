@@ -23,6 +23,7 @@
         FloatConstant,
         Assignation,
         StringConstant,
+        DateConstant,
         EOF,
         OpenBrace,
         CloseBrace,

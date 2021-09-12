@@ -20,6 +20,8 @@ namespace Compiler.Core.Models.Parser
         public static Type String => new Type("string", TokenType.BasicType);
         public static Type Void => new Type("void", TokenType.BasicType);
 
+        public static Type Date => new Type("Date", TokenType.DateTimeKeyword);
+
 
         public bool Equals(Type other)
         {

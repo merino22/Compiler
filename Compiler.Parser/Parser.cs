@@ -222,6 +222,10 @@ namespace Compiler.Parser
                     constant = new Constant(lookAhead, Type.Int);
                     Match(TokenType.Decrement);
                     return constant;
+                case TokenType.DateConstant:
+                    constant = new Constant(lookAhead, Type.Date);
+                    Match(TokenType.DateConstant);
+                    return constant;
                 default:
                     var symbol = top.Get(this.lookAhead.Lexeme);
                     Match(TokenType.Identifier);
@@ -286,7 +290,8 @@ namespace Compiler.Parser
         {
             if (this.lookAhead.TokenType == TokenType.IntKeyword ||
                 this.lookAhead.TokenType == TokenType.FloatKeyword ||
-                this.lookAhead.TokenType == TokenType.StringKeyword)
+                this.lookAhead.TokenType == TokenType.StringKeyword ||
+                this.lookAhead.TokenType == TokenType.DateTimeKeyword)
             {
                 Decl();
                 Decls();
@@ -311,6 +316,14 @@ namespace Compiler.Parser
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, Type.String);
+                    top.AddVariable(token.Lexeme, id);
+                    break;
+                case TokenType.DateTimeKeyword:
+                    Match(TokenType.DateTimeKeyword);
+                    token = lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.SemiColon);
+                    id = new Id(token, Type.Date);
                     top.AddVariable(token.Lexeme, id);
                     break;
                 default:

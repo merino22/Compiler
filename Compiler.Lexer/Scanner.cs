@@ -28,7 +28,7 @@ namespace Compiler.Lexer
                 { "int", TokenType.IntKeyword },
                 { "float", TokenType.FloatKeyword},
                 { "bool", TokenType.BoolKeyword },
-                { "DateTime", TokenType.DateTimeKeyword },
+                { "Date", TokenType.DateTimeKeyword },
                 { "string", TokenType.StringKeyword }
             };
             //this.symbolTable = new List<Symbol>();
@@ -85,7 +85,7 @@ namespace Compiler.Lexer
                         currentChar = PeekNextChar();
                     }
 
-                    if (currentChar != '.')
+                    if (currentChar != '.' && currentChar != '/')
                     {
                         return new Token
                         {
@@ -96,22 +96,43 @@ namespace Compiler.Lexer
                         };
                     }
 
-                    currentChar = GetNextChar();
-                    lexeme.Append(currentChar);
-                    currentChar = PeekNextChar();
-                    while (char.IsDigit(currentChar))
+                    if(currentChar == '.')
+                    {
+                        currentChar = GetNextChar();
+                        lexeme.Append(currentChar);
+                        currentChar = PeekNextChar();
+
+                        while (char.IsDigit(currentChar))
+                        {
+                            currentChar = GetNextChar();
+                            lexeme.Append(currentChar);
+                            currentChar = PeekNextChar();
+                        }
+
+                        return new Token
+                        {
+                            TokenType = TokenType.FloatConstant,
+                            Column = _input.Position.Column,
+                            Line = _input.Position.Line,
+                            Lexeme = lexeme.ToString(),
+                        };
+                    }
+
+                    while (char.IsDigit(currentChar) || currentChar == '/')
                     {
                         currentChar = GetNextChar();
                         lexeme.Append(currentChar);
                         currentChar = PeekNextChar();
                     }
+
                     return new Token
                     {
-                        TokenType = TokenType.FloatConstant,
+                        TokenType = TokenType.DateConstant,
                         Column = _input.Position.Column,
                         Line = _input.Position.Line,
                         Lexeme = lexeme.ToString(),
                     };
+
 
                 }
                 else switch (currentChar)
