@@ -157,7 +157,8 @@ namespace Compiler.Parser
             if (this.lookAhead.TokenType == TokenType.LessThan
                 || this.lookAhead.TokenType == TokenType.GreaterThan
                 || this.lookAhead.TokenType == TokenType.LessOrEqualThan
-                || this.lookAhead.TokenType == TokenType.GreaterOrEqualThan)
+                || this.lookAhead.TokenType == TokenType.GreaterOrEqualThan
+                || this.lookAhead.TokenType == TokenType.InKeyword)
             {
                 var token = lookAhead;
                 Move();
@@ -212,6 +213,14 @@ namespace Compiler.Parser
                 case TokenType.StringConstant:
                     constant = new Constant(lookAhead, Type.String);
                     Match(TokenType.StringConstant);
+                    return constant;
+                case TokenType.Increment:
+                    constant = new Constant(lookAhead, Type.Int);
+                    Match(TokenType.Increment);
+                    return constant;
+                case TokenType.Decrement:
+                    constant = new Constant(lookAhead, Type.Int);
+                    Match(TokenType.Decrement);
                     return constant;
                 default:
                     var symbol = top.Get(this.lookAhead.Lexeme);

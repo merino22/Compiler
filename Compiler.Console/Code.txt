@@ -9,10 +9,9 @@ x++;
 x--;
 a := o + 'hola peter!';
 foreach(x in xx)
-    x++;
-
+x++;
 while(o >= 10)
-    x--;
+x++;
 
 if(x>y)
     x := 10;

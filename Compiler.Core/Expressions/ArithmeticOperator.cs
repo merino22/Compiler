@@ -19,7 +19,8 @@ namespace Compiler.Core.Expressions
                 { (Type.Float, Type.Int), Type.Float },
                 { (Type.Int, Type.Float), Type.Float },
                 { (Type.String, Type.Int), Type.String  },
-                { (Type.String, Type.Float), Type.String  }
+                { (Type.String, Type.Float), Type.String  },
+                { (Type.Float, Type.String), Type.String},
             };
         }
 

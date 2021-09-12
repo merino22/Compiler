@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Compiler.Core;
 using Compiler.Core.Models;
 using Compiler.Core.Models.Lexer;
 using Compiler.Lexer;
@@ -13,13 +14,14 @@ namespace Compiler.Console
             var code = File.ReadAllText("Code.txt").Replace(Environment.NewLine, "\n");
             var input = new Input(code);
             var scanner = new Scanner(input);
-            while (true)
+            /*while (true)
             {
                 scanner.GetNextToken();
-            }
-            /*var parser = new Parser.Parser(scanner);
+            }*/
+            var parser = new Parser.Parser(scanner);
             var engine = new CompilerEngine(parser);
-            engine.Run();*/
+            engine.Run();
+            System.Console.WriteLine("success${code}");
         }
     }
 }
