@@ -1,9 +1,6 @@
 ﻿using Compiler.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Compiler.Core
+namespace Compiler.Core.Engine
 {
     public class CompilerEngine
     {

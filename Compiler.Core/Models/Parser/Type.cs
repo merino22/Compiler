@@ -34,11 +34,7 @@ namespace Compiler.Core.Models.Parser
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-            return Equals((Type)obj);
+            return obj.GetType() != this.GetType() ? false : Equals((Type)obj);
         }
 
         public override int GetHashCode()

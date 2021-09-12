@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Compiler.Core.Models;
+using Compiler.Core.Models.Lexer;
 using Type = Compiler.Core.Models.Parser.Type;
 
 namespace Compiler.Core.Expressions
