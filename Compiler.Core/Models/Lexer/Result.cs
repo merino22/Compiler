@@ -2,17 +2,9 @@
 
 namespace Compiler.Core.Models.Lexer
 {
-    public class Result: IResult
+    public class Result
     {
-        Result<T> IResult.Value<T>(T value, Input reminder)
-        {
-            return new Result<T>(value, reminder);
-        }
-
-        Result<T> IResult.Empty<T>(Input reminder)
-        {
-            return new Result<T>(reminder);
-        }
-        
+        public static Result<T> Empty<T>(Input reminder)=> new Result<T>(reminder);
+        public static Result<T> Value<T>(T value, Input reminder) => new Result<T>(value, reminder);
     }
 }
