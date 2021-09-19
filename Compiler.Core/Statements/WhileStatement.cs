@@ -6,7 +6,7 @@ namespace Compiler.Core.Statements
 {
     public class WhileStatement : Statement, ISemanticValidation
     {
-        public WhileStatement(Expression expression, TypedExpression statement)
+        public WhileStatement(Expression expression, Statement statement)
         {
             Expression = expression;
             Statement = statement;
@@ -14,13 +14,9 @@ namespace Compiler.Core.Statements
         }
 
         public Expression Expression { get; }
-        public TypedExpression Statement { get; }
+        public Statement Statement { get; }
         public override void Interpret()
         {
-            if (Expression?.Evaluate())
-            {
-
-            }
         }
 
         public override void ValidateSemantic()

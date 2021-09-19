@@ -5,21 +5,17 @@ namespace Compiler.Core.Statements
 {
     public class ForEachStatement : Statement, ISemanticValidation
     {
-        public ForEachStatement(TypedExpression expression, Statement statement)
+        public ForEachStatement(Expression expression, Statement statement)
         {
             Expression = expression;
             Statement = statement;
             ValidateSemantic();
         }
 
-        public TypedExpression Expression { get; }
+        public Expression Expression { get; }
         public Statement Statement { get; }
         public override void Interpret()
         {
-            if (Expression?.Evaluate())
-            {
-
-            }
         }
 
         public override void ValidateSemantic()
