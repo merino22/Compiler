@@ -18,5 +18,10 @@ namespace Compiler.Core.Expressions
         {
             return Type;
         }
+
+        public override string Generate()
+        {
+            return Token.Lexeme;
+        }
     }
 }
