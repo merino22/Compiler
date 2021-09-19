@@ -4,6 +4,7 @@ using Compiler.Core.Statements;
 using System;
 using Compiler.Core.Enum;
 using Compiler.Core.Models.Lexer;
+using Compiler.Core.Models.Parser;
 using Constant = Compiler.Core.Expressions.Constant;
 using Environment = Compiler.Core.Models.Parser.Environment;
 using Expression = Compiler.Core.Expressions.Expression;
@@ -15,8 +16,6 @@ namespace Compiler.Parser
     {
         private readonly IScanner _scanner;
         private Token _lookAhead;
-        private Environment _top;
-
         public Parser(IScanner scanner)
         {
             this._scanner = scanner;
@@ -30,8 +29,8 @@ namespace Compiler.Parser
 
         private Statement Program()
         {
-            _top = new Environment(_top);
-            _top.AddMethod("print", new Id(new Token
+            EnvironmentManager.PushContext();
+            EnvironmentManager.AddMethod("print", new Id(new Token
             {
                 Lexeme = "print"
             }, Type.Void),
@@ -53,12 +52,11 @@ namespace Compiler.Parser
         private Statement Block()
         {
             Match(TokenType.OpenBrace);
-            var previousSavedEnvironment = _top;
-            _top = new Environment(_top);
+            EnvironmentManager.PushContext();
             Decls();
             var statements = Stmts();
             Match(TokenType.CloseBrace);
-            _top = previousSavedEnvironment;
+            EnvironmentManager.PopContext();
             return statements;
         }
 
@@ -79,7 +77,7 @@ namespace Compiler.Parser
             {
                 case TokenType.Identifier:
                     {
-                        var symbol = _top.Get(this._lookAhead.Lexeme);
+                        var symbol = EnvironmentManager.GetSymbol(this._lookAhead.Lexeme);
                         Match(TokenType.Identifier);
                         if (this._lookAhead.TokenType == TokenType.Assignation)
                         {
@@ -222,7 +220,7 @@ namespace Compiler.Parser
                     Match(TokenType.DateConstant);
                     return constant;
                 default:
-                    var symbol = _top.Get(this._lookAhead.Lexeme);
+                    var symbol = EnvironmentManager.GetSymbol(this._lookAhead.Lexeme);
                     Match(TokenType.Identifier);
                     return symbol.Id;
             }
@@ -299,35 +297,43 @@ namespace Compiler.Parser
             {
                 case TokenType.FloatKeyword:
                     Match(TokenType.FloatKeyword);
-                    var token = _lookAhead;
+                    var token = this._lookAhead;
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     var id = new Id(token, Type.Float);
-                    _top.AddVariable(token.Lexeme, id);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
                     break;
                 case TokenType.StringKeyword:
                     Match(TokenType.StringKeyword);
-                    token = _lookAhead;
+                    token = this._lookAhead;
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, Type.String);
-                    _top.AddVariable(token.Lexeme, id);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
                     break;
                 case TokenType.DateTimeKeyword:
                     Match(TokenType.DateTimeKeyword);
-                    token = _lookAhead;
+                    token = this._lookAhead;
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, Type.Date);
-                    _top.AddVariable(token.Lexeme, id);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
+                    break;
+                case TokenType.BoolKeyword:
+                    Match(TokenType.BoolKeyword);
+                    token = this._lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.SemiColon);
+                    id = new Id(token, Type.Bool);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
                     break;
                 default:
                     Match(TokenType.IntKeyword);
-                    token = _lookAhead;
+                    token = this._lookAhead;
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, Type.Int);
-                    _top.AddVariable(token.Lexeme, id);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
                     break;
             }
         }
