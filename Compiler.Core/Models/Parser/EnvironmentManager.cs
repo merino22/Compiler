@@ -39,6 +39,7 @@ namespace Compiler.Core.Models.Parser
                     return symbol;
                 }
             }
+
             throw new ApplicationException($"Symbol {lexeme} doesn't exist in current context");
         }
 
@@ -52,6 +53,7 @@ namespace Compiler.Core.Models.Parser
                     return symbol;
                 }
             }
+
             throw new ApplicationException($"Symbol {lexeme} doesn't exist in current context");
         }
 
@@ -73,3 +75,5 @@ namespace Compiler.Core.Models.Parser
             }
         }
     }
+}
+    
