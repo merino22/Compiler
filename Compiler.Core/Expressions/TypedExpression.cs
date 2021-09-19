@@ -1,4 +1,4 @@
-﻿using Compiler.Core.Models;
+﻿using Compiler.Core.Models.Lexer;
 using Compiler.Core.Models.Parser;
 
 namespace Compiler.Core.Expressions
@@ -9,7 +9,7 @@ namespace Compiler.Core.Expressions
             : base(token, type)
         {
         }
-
+        public abstract dynamic Evaluate();
         public abstract Type GetExpressionType();
     }
 }

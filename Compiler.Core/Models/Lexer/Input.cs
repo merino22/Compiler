@@ -1,6 +1,4 @@
-﻿using Compiler.Lexer;
-
-namespace Compiler.Core.Models.Lexer
+﻿namespace Compiler.Core.Models.Lexer
 {
     public readonly struct Input
     {
@@ -24,13 +22,9 @@ namespace Compiler.Core.Models.Lexer
 
         public Result<char> NextChar()
         {
-            if (Length == 0)
-            {
-                return Result.Empty<char>(this);
-            }
-
-            var @char = Source[Position.Absolute];
-            return Result.Value(@char, new Input(Source, Position.MovePointer(@char), Length - 1));
+            return Length == 0
+                ? Result.Empty<char>(this)
+                : Result.Value(Source[Position.Absolute], new Input(Source, Position.MovePointer(Source[Position.Absolute]), Length - 1));
         }
 
     }

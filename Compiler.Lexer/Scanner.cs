@@ -54,25 +54,20 @@ namespace Compiler.Lexer
                         lexeme.Append(currentChar);
                         currentChar = PeekNextChar();
                     }
-
-                    if (this._keywords.ContainsKey(lexeme.ToString()))
+                    return this._keywords.ContainsKey(lexeme.ToString())? 
+                        new Token
                     {
-                        return new Token
-                        {
-                            TokenType = this._keywords[lexeme.ToString()],
-                            Column = _input.Position.Column,
-                            Line = _input.Position.Line,
-                            Lexeme = lexeme.ToString()
-                        };
-                    }
-
-                    return new Token
-                    {
-                        TokenType = TokenType.Identifier,
+                        TokenType = this._keywords[lexeme.ToString()],
                         Column = _input.Position.Column,
                         Line = _input.Position.Line,
-                        Lexeme = lexeme.ToString(),
-                    };
+                        Lexeme = lexeme.ToString()
+                    }: new Token
+                        {
+                            TokenType = TokenType.Identifier,
+                            Column = _input.Position.Column,
+                            Line = _input.Position.Line,
+                            Lexeme = lexeme.ToString(),
+                        };
                 }
                 else if (char.IsDigit(currentChar))
                 {

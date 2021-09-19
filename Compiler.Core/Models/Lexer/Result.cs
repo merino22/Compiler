@@ -1,6 +1,4 @@
-﻿using Compiler.Core.Interfaces;
-
-namespace Compiler.Core.Models.Lexer
+﻿namespace Compiler.Core.Models.Lexer
 {
     public class Result
     {

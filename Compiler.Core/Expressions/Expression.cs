@@ -1,5 +1,4 @@
-﻿using System;
-using Compiler.Core.Models;
+﻿using Compiler.Core.Models.Lexer;
 using Compiler.Core.Models.Parser;
 using Type = Compiler.Core.Models.Parser.Type;
 
@@ -16,5 +15,6 @@ namespace Compiler.Core.Expressions
             Token = token;
             this.Type = type;
         }
+        public abstract string Generate();
     }
 }

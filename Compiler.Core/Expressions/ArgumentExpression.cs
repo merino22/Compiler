@@ -1,4 +1,4 @@
-﻿using Compiler.Core.Models;
+﻿using Compiler.Core.Models.Lexer;
 
 namespace Compiler.Core.Expressions
 {
@@ -8,6 +8,15 @@ namespace Compiler.Core.Expressions
             : base(token, leftExpression, rightExpression, null)
         {
 
+        }
+        public override string Generate()
+        {
+            if (RightExpression != null)
+            {
+                return $"{LeftExpression.Generate()} {Token.Lexeme} {RightExpression.Generate()}";
+            }
+
+            return LeftExpression.Generate();
         }
     }
 }

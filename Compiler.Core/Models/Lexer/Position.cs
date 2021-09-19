@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Compiler.Lexer
+﻿namespace Compiler.Core.Models.Lexer
 {
     public readonly struct Position
     {

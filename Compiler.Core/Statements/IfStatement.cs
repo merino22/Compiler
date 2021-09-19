@@ -1,5 +1,4 @@
 ﻿using Compiler.Core.Expressions;
-using Compiler.Core.Interfaces;
 using System;
 using Type = Compiler.Core.Models.Parser.Type;
 

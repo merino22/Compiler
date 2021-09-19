@@ -1,4 +1,4 @@
-﻿using Compiler.Core.Models;
+﻿using Compiler.Core.Models.Lexer;
 using Compiler.Core.Models.Parser;
 
 namespace Compiler.Core.Expressions
@@ -7,6 +7,11 @@ namespace Compiler.Core.Expressions
     {
         public Id(Token token, Type type) : base(token, type)
         {
+        }
+
+        public override dynamic Evaluate()
+        {
+            return EnvironmentManager.GetSymbolForEvaluation(Token.Lexeme).Value;
         }
 
         public override Type GetExpressionType()

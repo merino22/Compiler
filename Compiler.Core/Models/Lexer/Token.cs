@@ -1,6 +1,6 @@
 ﻿using Compiler.Core.Enum;
 
-namespace Compiler.Core.Models
+namespace Compiler.Core.Models.Lexer
 {
     public class Token
     {

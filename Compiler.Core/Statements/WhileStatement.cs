@@ -17,6 +17,7 @@ namespace Compiler.Core.Statements
         public Statement Statement { get; }
         public override void ValidateSemantic()
         {
+            //Statement?.ValidateSemantic();
         }
     }
 }

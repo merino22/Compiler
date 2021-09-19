@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Compiler.Core.Models;
+using Compiler.Core.Enum;
+using Compiler.Core.Models.Lexer;
 using Type = Compiler.Core.Models.Parser.Type;
 
 namespace Compiler.Core.Expressions
@@ -26,6 +27,18 @@ namespace Compiler.Core.Expressions
             };
         }
 
+        public override dynamic Evaluate()
+        {
+            return Token.TokenType switch
+            {
+                TokenType.Plus => LeftExpression.Evaluate() + RightExpression.Evaluate(),
+                TokenType.Minus => LeftExpression.Evaluate() - RightExpression.Evaluate(),
+                TokenType.Asterisk => LeftExpression.Evaluate() * RightExpression.Evaluate(),
+                TokenType.Division => LeftExpression.Evaluate() / RightExpression.Evaluate(),
+                _ => throw new NotImplementedException()
+            };
+        }
+
         public override Type GetExpressionType()
         {
             if (_typeRules.TryGetValue((LeftExpression.GetExpressionType(), RightExpression.GetExpressionType()), out var resultType))
@@ -34,6 +47,17 @@ namespace Compiler.Core.Expressions
             }
 
             throw new ApplicationException($"Cannot perform arithmetic operation on {LeftExpression.GetExpressionType()}, {RightExpression.GetExpressionType()}");
+        }
+
+        public override string Generate()
+        {
+            if (LeftExpression.GetExpressionType() == Type.String &&
+                RightExpression.GetExpressionType() != Type.String)
+            {
+                return $"{LeftExpression.Generate()} {Token.Lexeme} str({RightExpression.Generate()})";
+            }
+
+            return $"{LeftExpression.Generate()} {Token.Lexeme} {RightExpression.Generate()}";
         }
     }
 }
