@@ -6,7 +6,7 @@ namespace Compiler.Core.Statements
 {
     public class IncrementStatement : Statement, ISemanticValidation
     {
-        public IncrementStatement(Id id, Expression expression)
+        public IncrementStatement(Id id, TypedExpression expression)
         {
             Id = id;
             Expression = expression;
@@ -15,10 +15,13 @@ namespace Compiler.Core.Statements
 
 
         public Id Id { get; }
-        public Expression Expression { get; }
+        public TypedExpression Expression { get; }
         public override void Interpret()
         {
-            throw new NotImplementedException();
+            if (Expression?.Evaluate())
+            {
+
+            }
         }
 
         public override void ValidateSemantic()
@@ -31,7 +34,7 @@ namespace Compiler.Core.Statements
 
         public override string Generate(int tabs)
         {
-            throw new NotImplementedException();
+            return "";
         }
     }
 

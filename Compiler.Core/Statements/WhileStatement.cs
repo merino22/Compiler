@@ -6,7 +6,7 @@ namespace Compiler.Core.Statements
 {
     public class WhileStatement : Statement, ISemanticValidation
     {
-        public WhileStatement(Expression expression, Statement statement)
+        public WhileStatement(Expression expression, TypedExpression statement)
         {
             Expression = expression;
             Statement = statement;
@@ -14,10 +14,13 @@ namespace Compiler.Core.Statements
         }
 
         public Expression Expression { get; }
-        public Statement Statement { get; }
+        public TypedExpression Statement { get; }
         public override void Interpret()
         {
-            throw new NotImplementedException();
+            if (Expression?.Evaluate())
+            {
+
+            }
         }
 
         public override void ValidateSemantic()
@@ -27,7 +30,7 @@ namespace Compiler.Core.Statements
 
         public override string Generate(int tabs)
         {
-            throw new NotImplementedException();
+            return "while(){}";
         }
     }
 }

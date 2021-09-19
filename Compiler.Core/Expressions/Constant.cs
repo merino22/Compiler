@@ -31,7 +31,7 @@ namespace Compiler.Core.Expressions
 
         public override string Generate()
         {
-            throw new System.NotImplementedException();
+            return Evaluate();
         }
     }
 }

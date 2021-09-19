@@ -5,18 +5,21 @@ namespace Compiler.Core.Statements
 {
     public class ForEachStatement : Statement, ISemanticValidation
     {
-        public ForEachStatement(Expression expression, Statement statement)
+        public ForEachStatement(TypedExpression expression, Statement statement)
         {
             Expression = expression;
             Statement = statement;
             ValidateSemantic();
         }
 
-        public Expression Expression { get; }
+        public TypedExpression Expression { get; }
         public Statement Statement { get; }
         public override void Interpret()
         {
-            throw new System.NotImplementedException();
+            if (Expression?.Evaluate())
+            {
+
+            }
         }
 
         public override void ValidateSemantic()
@@ -25,7 +28,7 @@ namespace Compiler.Core.Statements
 
         public override string Generate(int tabs)
         {
-            throw new System.NotImplementedException();
+            return "numbers.foreach(number=>{})";
         }
     }
 }
