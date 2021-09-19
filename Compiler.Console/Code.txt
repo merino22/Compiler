@@ -1,4 +1,4 @@
-﻿{
+﻿class bruh{
 float o;
 int x;
 int xx;
@@ -20,9 +20,9 @@ if(x>y)
 else
     a:= 'adios';
 
-{
+class xd{
     int w;
-    {
+    class yd{
 	int ylf;
     }
 }

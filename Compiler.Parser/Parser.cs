@@ -54,8 +54,37 @@ namespace Compiler.Parser
             return block;
         }
 
+        private Statement Class()
+        {
+            EnvironmentManager.PushContext();
+            EnvironmentManager.AddMethod("class", new Id(new Token
+            {
+                Lexeme = "class"
+            }, Type.Class),
+            new ArgumentExpression(new Token
+            {
+                Lexeme = ","
+            },
+            new Id(new Token
+            {
+                Lexeme = "arg1"
+            }, Type.String),
+            new Id(new Token
+            {
+                Lexeme = "arg2"
+            }, Type.String)));
+            var block = Block();
+            block.ValidateSemantic();
+            var code = block.Generate(0);
+            Console.WriteLine(code);
+            //code = code.Replace($"else:{Environment.NewLine}\tif", "elif");
+            return block;
+        }
+
         private Statement Block()
         {
+            Match(TokenType.ClassKeyword);
+            Match(TokenType.Identifier);
             Match(TokenType.OpenBrace);
             EnvironmentManager.PushContext();
             Decls();
