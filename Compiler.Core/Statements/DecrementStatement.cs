@@ -19,7 +19,6 @@ namespace Compiler.Core.Statements
 
         public override void Interpret()
         {
-            throw new NotImplementedException();
         }
 
         public override void ValidateSemantic()
@@ -32,7 +31,7 @@ namespace Compiler.Core.Statements
 
         public override string Generate(int tabs)
         {
-            throw new NotImplementedException();
+            return "";
         }
     }
 }

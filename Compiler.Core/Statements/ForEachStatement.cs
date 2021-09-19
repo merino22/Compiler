@@ -16,7 +16,6 @@ namespace Compiler.Core.Statements
         public Statement Statement { get; }
         public override void Interpret()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void ValidateSemantic()
@@ -25,7 +24,7 @@ namespace Compiler.Core.Statements
 
         public override string Generate(int tabs)
         {
-            throw new System.NotImplementedException();
+            return "numbers.foreach(number=>{})";
         }
     }
 }
