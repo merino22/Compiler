@@ -38,6 +38,7 @@
         Decrement,
         And,
         Or,
+        Not,
         ForKeyword,
         ForEachKeyword,
         InKeyword,

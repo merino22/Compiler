@@ -91,7 +91,17 @@ namespace Compiler.Parser
                     {
                         Match(TokenType.IfKeyword);
                         Match(TokenType.LeftParens);
+                        if(this._lookAhead.TokenType == TokenType.Not)
+                        {
+                            System.Console.Write($"Llegamos a la disco {this._lookAhead.Lexeme}");
+                            Logic();
+                        }
                         expression = Eq();
+                        if(this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
+                        {
+                            System.Console.Write($"Llegamos a la disco {this._lookAhead.Lexeme}");
+                            Logic();
+                        }
                         Match(TokenType.RightParens);
                         statement1 = Stmt();
                         if (this._lookAhead.TokenType != TokenType.ElseKeyword)
@@ -150,6 +160,20 @@ namespace Compiler.Parser
                 var token = _lookAhead;
                 Move();
                 expression = new RelationalExpression(token, expression as TypedExpression, Expr() as TypedExpression);
+            }
+            return expression;
+        }
+
+        private Expression Logic()
+        {
+            var expression = Rel();
+            if (this._lookAhead.TokenType == TokenType.And
+             || this._lookAhead.TokenType == TokenType.Or
+             || this._lookAhead.TokenType == TokenType.Not)
+            {
+                var token = _lookAhead;
+                Move();
+                expression = new LogicalExpression(token, expression as TypedExpression, Logic() as TypedExpression);
             }
             return expression;
         }
@@ -213,12 +237,22 @@ namespace Compiler.Parser
                     constant = new Constant(_lookAhead, Type.Date);
                     Match(TokenType.DateConstant);
                     return constant;
+                case TokenType.And:
+                    //Match(TokenType.And);
+                    return null;
+                case TokenType.Or:
+                    //Match(TokenType.DateConstant);
+                    return null;
+                case TokenType.Not:
+                    //Match(TokenType.DateConstant);
+                    return null;
                 default:
                     var symbol = EnvironmentManager.GetSymbol(this._lookAhead.Lexeme);
                     Match(TokenType.Identifier);
                     return symbol.Id;
             }
         }
+
 
         private Statement CallStmt(Symbol symbol)
         {

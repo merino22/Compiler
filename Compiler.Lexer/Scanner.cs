@@ -44,7 +44,7 @@ namespace Compiler.Lexer
                 {
                     currentChar = GetNextChar();
                 }
-                if (char.IsLetter(currentChar))
+                if (char.IsLetter(currentChar) && !currentChar.Equals('!'))
                 {
                     lexeme.Append(currentChar);
                     currentChar = PeekNextChar();
@@ -267,7 +267,51 @@ namespace Compiler.Lexer
                             Line = _input.Position.Line,
                             Lexeme = lexeme.ToString().Trim()
                         };
-                    case '(':
+                        case '&':
+                            lexeme.Append(currentChar);
+                            nextChar = PeekNextChar();
+                            if (nextChar != '&')
+                            {
+                                throw new ApplicationException($"Caracter {lexeme} invalido en la columna: {_input.Position.Column}, fila: {_input.Position.Line}");
+                            }
+
+                            lexeme.Append(nextChar);
+                            GetNextChar();
+                            return new Token
+                            {
+                                TokenType = TokenType.And,
+                                Column = _input.Position.Column,
+                                Line = _input.Position.Line,
+                                Lexeme = lexeme.ToString().Trim()
+                            };
+                        case '|':
+                            lexeme.Append(currentChar);
+                            nextChar = PeekNextChar();
+                            if (nextChar != '|')
+                            {
+                                throw new ApplicationException($"Caracter {lexeme} invalido en la columna: {_input.Position.Column}, fila: {_input.Position.Line}");
+                            }
+
+                            lexeme.Append(nextChar);
+                            GetNextChar();
+                            return new Token
+                            {
+                                TokenType = TokenType.Or,
+                                Column = _input.Position.Column,
+                                Line = _input.Position.Line,
+                                Lexeme = lexeme.ToString().Trim()
+                            };
+                        case '!':
+                            lexeme.Append(currentChar);
+                            GetNextChar();
+                            return new Token
+                            {
+                                TokenType = TokenType.Not,
+                                Column = _input.Position.Column,
+                                Line = _input.Position.Line,
+                                Lexeme = lexeme.ToString().Trim()
+                            };
+                        case '(':
                         lexeme.Append(currentChar);
                         return new Token
                         {

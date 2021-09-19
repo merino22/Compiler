@@ -15,7 +15,7 @@ x++;
 while(o >= 10)
 x++;
 
-if(x>y)
+if(x>y && y>10 || xx > 50 && xx < 100)
     x := 10;
 else
     a:= 'adios';
