@@ -43,19 +43,8 @@ namespace Compiler.Parser
             var token = this._lookAhead;
             Match(TokenType.Identifier);
             EnvironmentManager.AddMethod( "class "+ token.Lexeme, new Id(token
-                    , Type.Class),
-                new ArgumentExpression(new Token
-                    {
-                        Lexeme = ","
-                    },
-                    new Id(new Token
-                    {
-                        Lexeme = "arg1"
-                    }, Type.String),
-                    new Id(new Token
-                    {
-                        Lexeme = "arg2"
-                    }, Type.String)));
+                    , Type.Class), null);
+            EnvironmentManager.GetSymbolForEvaluation("class " + token.Lexeme);
             Match(TokenType.OpenBrace);
             EnvironmentManager.PushContext();
             Decls();
