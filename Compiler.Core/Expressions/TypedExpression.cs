@@ -9,7 +9,7 @@ namespace Compiler.Core.Expressions
             : base(token, type)
         {
         }
-
+        public abstract dynamic Evaluate();
         public abstract Type GetExpressionType();
     }
 }

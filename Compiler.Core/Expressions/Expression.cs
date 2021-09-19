@@ -15,5 +15,6 @@ namespace Compiler.Core.Expressions
             Token = token;
             this.Type = type;
         }
+        public abstract string Generate();
     }
 }

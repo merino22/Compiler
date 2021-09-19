@@ -9,11 +9,9 @@ namespace Compiler.Core.Models.Parser
     public class Environment
     {
         private readonly Dictionary<string, Symbol> _table;
-        protected Environment Previous;
 
-        public Environment(Environment previous)
+        public Environment()
         {
-            Previous = previous;
             _table = new Dictionary<string, Symbol>();
         }
 
@@ -42,14 +40,12 @@ namespace Compiler.Core.Models.Parser
 
         public Symbol Get(string lexeme)
         {
-            for (var currentEnv = this; currentEnv != null; currentEnv = currentEnv.Previous)
+            if (_table.TryGetValue(lexeme, out var found))
             {
-                if (currentEnv._table.TryGetValue(lexeme, out var found))
-                {
-                    return found;
-                }
+                return found;
             }
-            throw new ApplicationException($"Symbol {lexeme} doesn't exist in current context");
+
+            return null;
         }
     }
 }
