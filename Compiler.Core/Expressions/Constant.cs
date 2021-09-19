@@ -18,7 +18,8 @@ namespace Compiler.Core.Expressions
             {
                 TokenType.IntConstant => Convert.ToInt32(Token.Lexeme),
                 TokenType.FloatConstant => float.Parse(Token.Lexeme),
-                TokenType.StringConstant => Token.Lexeme,
+                TokenType.DateTimeKeyword => DateTime.Parse(Token.Lexeme),
+                TokenType.BoolKeyword => Boolean.Parse(Token.Lexeme),
                 _ => throw new NotImplementedException()
             };
         }
