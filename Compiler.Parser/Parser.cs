@@ -30,22 +30,6 @@ namespace Compiler.Parser
         private Statement Program()
         {
             EnvironmentManager.PushContext();
-            EnvironmentManager.AddMethod("print", new Id(new Token
-            {
-                Lexeme = "print"
-            }, Type.Void),
-            new ArgumentExpression(new Token
-            {
-                Lexeme = ","
-            },
-            new Id(new Token
-            {
-                Lexeme = "arg1"
-            }, Type.String),
-            new Id(new Token
-            {
-                Lexeme = "arg2"
-            }, Type.String)));
             var block = Block();
             block.ValidateSemantic();
             var code = block.Generate(0);
@@ -53,38 +37,25 @@ namespace Compiler.Parser
             //code = code.Replace($"else:{Environment.NewLine}\tif", "elif");
             return block;
         }
-
-        private Statement Class()
-        {
-            EnvironmentManager.PushContext();
-            EnvironmentManager.AddMethod("class", new Id(new Token
-            {
-                Lexeme = "class"
-            }, Type.Class),
-            new ArgumentExpression(new Token
-            {
-                Lexeme = ","
-            },
-            new Id(new Token
-            {
-                Lexeme = "arg1"
-            }, Type.String),
-            new Id(new Token
-            {
-                Lexeme = "arg2"
-            }, Type.String)));
-            var block = Block();
-            block.ValidateSemantic();
-            var code = block.Generate(0);
-            Console.WriteLine(code);
-            //code = code.Replace($"else:{Environment.NewLine}\tif", "elif");
-            return block;
-        }
-
         private Statement Block()
         {
             Match(TokenType.ClassKeyword);
+            var token = this._lookAhead;
             Match(TokenType.Identifier);
+            EnvironmentManager.AddMethod( "class "+ token.Lexeme, new Id(token
+                    , Type.Class),
+                new ArgumentExpression(new Token
+                    {
+                        Lexeme = ","
+                    },
+                    new Id(new Token
+                    {
+                        Lexeme = "arg1"
+                    }, Type.String),
+                    new Id(new Token
+                    {
+                        Lexeme = "arg2"
+                    }, Type.String)));
             Match(TokenType.OpenBrace);
             EnvironmentManager.PushContext();
             Decls();
