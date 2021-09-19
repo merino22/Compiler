@@ -48,7 +48,6 @@ namespace Compiler.Parser
             }, Type.String)));
             var block = Block();
             block.ValidateSemantic();
-            var code = block.Generate(0);
             //code = code.Replace($"else:{Environment.NewLine}\tif", "elif");
             return block;
         }
