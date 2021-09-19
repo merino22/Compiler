@@ -14,8 +14,18 @@ namespace Compiler.Core.Statements
 
         public Expression Expression { get; }
         public Statement Statement { get; }
+        public override void Interpret()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void ValidateSemantic()
         {
+        }
+
+        public override string Generate(int tabs)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

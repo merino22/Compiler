@@ -1,6 +1,8 @@
 ﻿using Compiler.Core.Expressions;
 using Compiler.Core.Interfaces;
 using System;
+using Compiler.Core.Models.Parser;
+using Environment = System.Environment;
 
 namespace Compiler.Core.Statements
 {
@@ -14,6 +16,18 @@ namespace Compiler.Core.Statements
 
         public Id Id { get; }
         public TypedExpression Expression { get; }
+
+        public override string Generate(int tabs)
+        {
+            var code = GetCodeInit(tabs);
+            code += $"{Id.Generate()} = {Expression.Generate()}{Environment.NewLine}";
+            return code;
+        }
+
+        public override void Interpret()
+        {
+            EnvironmentManager.UpdateVariable(Id.Token.Lexeme, Expression.Evaluate());
+        }
 
         public override void ValidateSemantic()
         {
