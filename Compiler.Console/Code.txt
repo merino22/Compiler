@@ -25,6 +25,8 @@ class xd{
     class yd{
 	int ylf;
     }
+    void prueba{
+    }
 }
 y:=6+2+3+5;
 }
