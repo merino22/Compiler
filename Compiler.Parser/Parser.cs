@@ -46,7 +46,7 @@ namespace Compiler.Parser
                 Match(TokenType.Identifier);
                 EnvironmentManager.AddMethod("class " + token.Lexeme, new Id(token
                     , Type.Class), null);
-                Console.WriteLine("class " + token.Lexeme);
+                Console.WriteLine("class " + token.Lexeme +"{}");
             }
             else if (this._lookAhead.TokenType == TokenType.FunctionKeyword)
             {
@@ -55,7 +55,7 @@ namespace Compiler.Parser
                 Match(TokenType.Identifier);
                 EnvironmentManager.AddMethod("void" + token.Lexeme, new Id(token
                     , Type.Func), null);
-                Console.WriteLine("void " + token.Lexeme);
+                Console.WriteLine("function " + token.Lexeme + "(){}");
             }
             Match(TokenType.OpenBrace);
             EnvironmentManager.PushContext();

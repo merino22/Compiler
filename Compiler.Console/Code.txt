@@ -1,4 +1,15 @@
 ﻿class bruh{
+}
+class xd{
+}
+class yd{
+    }
+void prueba{
+        }
+int ylf;
+void prueba{
+  }
+int w;
 float o;
 int x;
 int xx;
@@ -19,15 +30,6 @@ if(x>y && y>10 || xx > 50 && xx < 100)
     x := 10;
 else
     a:= 'adios';
-
-class xd{
-    int w;
-    class yd{
-	int ylf;
-    }
-    void prueba{
-    }
-}
 y:=6+2+3+5;
-}
+
 
