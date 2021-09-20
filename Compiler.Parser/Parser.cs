@@ -57,6 +57,12 @@ namespace Compiler.Parser
                     , Type.Func), null);
                 Console.WriteLine("function " + token.Lexeme + "(){}");
             }
+
+            if (this._lookAhead.TokenType == TokenType.FunctionKeyword ||
+                this._lookAhead.TokenType == TokenType.ClassKeyword )
+            {
+                return Block();
+            }
             Match(TokenType.OpenBrace);
             EnvironmentManager.PushContext();
             Decls();
