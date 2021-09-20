@@ -105,12 +105,12 @@ namespace Compiler.Parser
                         Match(TokenType.LeftParens);
                         if(this._lookAhead.TokenType == TokenType.Not)
                         {
-                            Logic();
+                            Logic(null);
                         }
                         expression = Eq();
                         if(this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                         {
-                            Logic();
+                            expression = Logic(expression as TypedExpression);
                         }
                         Match(TokenType.RightParens);
                         statement1 = Stmt();
@@ -138,7 +138,7 @@ namespace Compiler.Parser
                     expression = Eq();
                     if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                     {
-                        Logic();
+                        Logic(expression as TypedExpression);
                     }
                     Match(TokenType.RightParens);
                     statement1 = Stmt();
@@ -184,7 +184,7 @@ namespace Compiler.Parser
             return expression;
         }
 
-        private Expression Logic()
+        private Expression Logic(TypedExpression expr)
         {
             var expression = Rel();
             if (_lookAhead.TokenType == TokenType.And
@@ -192,7 +192,11 @@ namespace Compiler.Parser
             {
                 var token = _lookAhead;
                 Move();
-                expression = new LogicalExpression(token, expression as TypedExpression, Logic() as TypedExpression);
+                if (expr != null)
+                {
+                    expression = expr;
+                }
+                expression = new LogicalExpression(token, expression as TypedExpression, Logic(null) as TypedExpression);
             }
 
             if (_lookAhead.TokenType == TokenType.Not)

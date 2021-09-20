@@ -40,15 +40,12 @@ namespace Compiler.Core.Expressions
 
         public override string Generate()
         {
-            return $"{LeftExpression.Generate()} {Token.Lexeme} {RightExpression.Generate()}";
+            return $"{LeftExpression?.Generate()} {Token?.Lexeme} {RightExpression?.Generate()}";
         }
 
         public override Type GetExpressionType()
         {
-            if (_typeRules.TryGetValue((LeftExpression.GetExpressionType(), RightExpression.GetExpressionType()), out var resultType))
-            {
-                return resultType;
-            }
+            return Type.Bool;
 
             throw new ApplicationException($"Cannot perform logical operation on {LeftExpression.GetExpressionType()}, {RightExpression.GetExpressionType()}");
         }
