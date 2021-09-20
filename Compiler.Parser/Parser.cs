@@ -138,7 +138,7 @@ namespace Compiler.Parser
                     expression = Eq();
                     if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                     {
-                        Logic(expression as TypedExpression);
+                        expression = Logic(expression as TypedExpression);
                     }
                     Match(TokenType.RightParens);
                     statement1 = Stmt();
