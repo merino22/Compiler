@@ -42,6 +42,7 @@
         ForKeyword,
         ForEachKeyword,
         InKeyword,
-        WhileKeyword
+        WhileKeyword,
+        FunctionKeyword
     }
 }

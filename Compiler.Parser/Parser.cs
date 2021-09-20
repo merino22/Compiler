@@ -39,12 +39,24 @@ namespace Compiler.Parser
         }
         private Statement Block()
         {
-            Match(TokenType.ClassKeyword);
-            var token = this._lookAhead;
-            Match(TokenType.Identifier);
-            EnvironmentManager.AddMethod( "class "+ token.Lexeme, new Id(token
+            if (this._lookAhead.TokenType == TokenType.ClassKeyword)
+            {
+                Match(TokenType.ClassKeyword);
+                var token = this._lookAhead;
+                Match(TokenType.Identifier);
+                EnvironmentManager.AddMethod("class " + token.Lexeme, new Id(token
                     , Type.Class), null);
-            EnvironmentManager.GetSymbolForEvaluation("class " + token.Lexeme);
+                Console.WriteLine("class " + token.Lexeme);
+            }
+            else if (this._lookAhead.TokenType == TokenType.FunctionKeyword)
+            {
+                Match(TokenType.FunctionKeyword);
+                var token = this._lookAhead;
+                Match(TokenType.Identifier);
+                EnvironmentManager.AddMethod("void" + token.Lexeme, new Id(token
+                    , Type.Func), null);
+                Console.WriteLine("void " + token.Lexeme);
+            }
             Match(TokenType.OpenBrace);
             EnvironmentManager.PushContext();
             Decls();
@@ -93,13 +105,11 @@ namespace Compiler.Parser
                         Match(TokenType.LeftParens);
                         if(this._lookAhead.TokenType == TokenType.Not)
                         {
-                            System.Console.Write($"Llegamos a la disco {this._lookAhead.Lexeme}");
                             Logic();
                         }
                         expression = Eq();
                         if(this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                         {
-                            System.Console.Write($"Llegamos a la disco {this._lookAhead.Lexeme}");
                             Logic();
                         }
                         Match(TokenType.RightParens);
@@ -119,16 +129,20 @@ namespace Compiler.Parser
                     expression = Eq();
                     Match(TokenType.RightParens);
                     statement1 = Stmt();
-                    return new ForEachStatement(expression, statement1);
+                    return new ForEachStatement(expression as TypedExpression, statement1);
                 }
                 case TokenType.WhileKeyword:
                 {
                     Match(TokenType.WhileKeyword);
                     Match(TokenType.LeftParens);
                     expression = Eq();
+                    if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
+                    {
+                        Logic();
+                    }
                     Match(TokenType.RightParens);
                     statement1 = Stmt();
-                    return new WhileStatement(expression, statement1);
+                    return new WhileStatement(expression as TypedExpression, statement1);
                 }
                 default:
                     return Block();
@@ -144,7 +158,6 @@ namespace Compiler.Parser
                 Move();
                 expression = new RelationalExpression(token, expression as TypedExpression, Rel() as TypedExpression);
             }
-
             return expression;
         }
 
@@ -154,12 +167,19 @@ namespace Compiler.Parser
             if (this._lookAhead.TokenType == TokenType.LessThan
                 || this._lookAhead.TokenType == TokenType.GreaterThan
                 || this._lookAhead.TokenType == TokenType.LessOrEqualThan
-                || this._lookAhead.TokenType == TokenType.GreaterOrEqualThan
-                || this._lookAhead.TokenType == TokenType.InKeyword)
+                || this._lookAhead.TokenType == TokenType.GreaterOrEqualThan)
             {
                 var token = _lookAhead;
                 Move();
                 expression = new RelationalExpression(token, expression as TypedExpression, Expr() as TypedExpression);
+            }
+
+            if (this._lookAhead.TokenType == TokenType.InKeyword)
+            {
+                var token = _lookAhead;
+                Move();
+                Match(TokenType.Identifier);
+                expression = new ArgumentExpression(token, expression as TypedExpression, null);
             }
             return expression;
         }
@@ -167,13 +187,19 @@ namespace Compiler.Parser
         private Expression Logic()
         {
             var expression = Rel();
-            if (this._lookAhead.TokenType == TokenType.And
-             || this._lookAhead.TokenType == TokenType.Or
-             || this._lookAhead.TokenType == TokenType.Not)
+            if (_lookAhead.TokenType == TokenType.And
+             || _lookAhead.TokenType == TokenType.Or)
             {
                 var token = _lookAhead;
                 Move();
                 expression = new LogicalExpression(token, expression as TypedExpression, Logic() as TypedExpression);
+            }
+
+            if (_lookAhead.TokenType == TokenType.Not)
+            {
+                var token = _lookAhead;
+                Move();
+                expression = new LogicalExpression(token, expression as TypedExpression, null);
             }
             return expression;
         }
@@ -238,13 +264,10 @@ namespace Compiler.Parser
                     Match(TokenType.DateConstant);
                     return constant;
                 case TokenType.And:
-                    //Match(TokenType.And);
                     return null;
                 case TokenType.Or:
-                    //Match(TokenType.DateConstant);
                     return null;
                 case TokenType.Not:
-                    //Match(TokenType.DateConstant);
                     return null;
                 default:
                     var symbol = EnvironmentManager.GetSymbol(this._lookAhead.Lexeme);
@@ -298,14 +321,15 @@ namespace Compiler.Parser
             //Match(TokenType.Increment);
             var expression = Eq();
             Match(TokenType.SemiColon);
-            return new IncrementStatement(id, expression);
+            //Console.WriteLine(Eq().Generate());
+            return new IncrementStatement(id, expression as TypedExpression);
         }
         private Statement DecrementStmt(Id id)
         {
             //Match(TokenType.Decrement);
             var expression = Eq();
             Match(TokenType.SemiColon);
-            return new DecrementStatement(id, expression);
+            return new DecrementStatement(id, expression as TypedExpression);
         }
         private void Decls()
         {

@@ -1,30 +1,38 @@
-﻿using Compiler.Core.Expressions;
+﻿using System;
+using Compiler.Core.Expressions;
 using Compiler.Core.Interfaces;
+using Type = Compiler.Core.Models.Parser.Type;
 
 namespace Compiler.Core.Statements
 {
     public class ForEachStatement : Statement, ISemanticValidation
     {
-        public ForEachStatement(Expression expression, Statement statement)
+        public ForEachStatement(TypedExpression expression, Statement statement)
         {
             Expression = expression;
             Statement = statement;
-            ValidateSemantic();
         }
 
-        public Expression Expression { get; }
+        public TypedExpression Expression { get; }
         public Statement Statement { get; }
         public override void Interpret()
         {
+            if (Expression.Evaluate())
+            {
+                Statement.Interpret();
+            }
         }
 
         public override void ValidateSemantic()
         {
+            
         }
 
         public override string Generate(int tabs)
         {
-            return "numbers.foreach(number=>{})";
+            var code = GetCodeInit(tabs);
+            code += $"foreach({Expression?.Evaluate()}){Environment.NewLine}{{{Statement.Generate(tabs)}}}";
+            return code;
         }
     }
 }

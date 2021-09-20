@@ -21,7 +21,7 @@ namespace Compiler.Core.Statements
         public override void Interpret()
         {
             var method = EnvironmentManager.GetSymbolForEvaluation(Id.Token.Lexeme);
-            if (method.Id.Token.Lexeme == "print")
+            if (false)
             {
                 InnerEvaluate(Arguments);
             }
@@ -88,7 +88,7 @@ namespace Compiler.Core.Statements
             }
             else
             {
-                code += arguments.Generate();
+                code += arguments?.Generate();
             }
             return code;
         }

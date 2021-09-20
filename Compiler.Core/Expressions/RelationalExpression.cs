@@ -32,6 +32,7 @@ namespace Compiler.Core.Expressions
                 TokenType.LessOrEqualThan => LeftExpression.Evaluate() <= RightExpression.Evaluate(),
                 TokenType.Equal => LeftExpression.Evaluate() == RightExpression.Evaluate(),
                 TokenType.NotEqual => LeftExpression.Evaluate() != RightExpression.Evaluate(),
+                TokenType.InKeyword => null,
                 _ => throw new NotImplementedException()
             };
         }
@@ -43,7 +44,7 @@ namespace Compiler.Core.Expressions
 
         public override string Generate()
         {
-            return "bruh";
+            return $"{LeftExpression.Generate()} {Token.Lexeme} {RightExpression.Generate()}";
         }
     }
 }

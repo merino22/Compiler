@@ -22,6 +22,7 @@ namespace Compiler.Lexer
                 { "foreach", TokenType.ForEachKeyword },
                 { "while", TokenType.WhileKeyword },
                 { "class", TokenType.ClassKeyword },
+                { "void", TokenType.FunctionKeyword },
                 { "for", TokenType.ForKeyword  },
                 { "in", TokenType.InKeyword  },
                 { "else", TokenType.ElseKeyword },

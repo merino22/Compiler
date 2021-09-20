@@ -1,24 +1,26 @@
 ﻿using System;
 using Compiler.Core.Expressions;
 using Compiler.Core.Interfaces;
+using Compiler.Core.Models.Parser;
+using Environment = System.Environment;
 
 namespace Compiler.Core.Statements
 {
     public class DecrementStatement: Statement, ISemanticValidation
     {
-        public DecrementStatement(Id id, Expression expression)
+        public DecrementStatement(Id id, TypedExpression expression)
         {
             Id = id;
             Expression = expression;
-            ValidateSemantic();
         }
 
 
         public Id Id { get; }
-        public Expression Expression { get; }
+        public TypedExpression Expression { get; }
 
         public override void Interpret()
         {
+            EnvironmentManager.UpdateVariable(Id.Token.Lexeme, Expression.Evaluate());
         }
 
         public override void ValidateSemantic()
@@ -31,7 +33,9 @@ namespace Compiler.Core.Statements
 
         public override string Generate(int tabs)
         {
-            return "";
+            var code = GetCodeInit(tabs);
+            code += $"{Id.Generate()}--{Environment.NewLine}";
+            return code;
         }
     }
 }

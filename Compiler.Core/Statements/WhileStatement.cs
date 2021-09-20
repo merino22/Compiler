@@ -1,32 +1,46 @@
 ﻿using System;
 using Compiler.Core.Expressions;
 using Compiler.Core.Interfaces;
+using Type = Compiler.Core.Models.Parser.Type;
 
 namespace Compiler.Core.Statements
 {
     public class WhileStatement : Statement, ISemanticValidation
     {
-        public WhileStatement(Expression expression, Statement statement)
+        public WhileStatement(TypedExpression expression, Statement statement)
         {
             Expression = expression;
             Statement = statement;
-            ValidateSemantic();
         }
 
-        public Expression Expression { get; }
+        public TypedExpression Expression { get; }
         public Statement Statement { get; }
         public override void Interpret()
         {
+            if (Expression.Evaluate())
+            {
+                Statement.Interpret();
+            }
         }
 
         public override void ValidateSemantic()
         {
-            //Statement?.ValidateSemantic();
+            if (Expression.GetExpressionType() != Type.Bool)
+            {
+                throw new ApplicationException("A boolean is required in whiles");
+            }
         }
 
         public override string Generate(int tabs)
         {
-            return "while(){}";
+            var code = GetCodeInit(tabs);
+            code += $"while({Expression.Generate()}){Environment.NewLine}{{";
+            for (int i = 0; i < tabs; i++)
+            {
+                code += "\t";
+            }
+            code += $"{Statement.Generate(tabs)}}}{Environment.NewLine}";
+            return code;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Compiler.Core.Models.Parser
         public static Type String => new Type("string", TokenType.BasicType);
         public static Type Void => new Type("void", TokenType.BasicType);
         public static Type Class => new Type("class", TokenType.ClassKeyword);
+        public static Type Func => new Type("func", TokenType.FunctionKeyword);
         public static Type Date => new Type("Date", TokenType.DateTimeKeyword);
 
 

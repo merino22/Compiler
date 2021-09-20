@@ -15,11 +15,16 @@ namespace Compiler.Core.Expressions
         {
             _typeRules = new Dictionary<(Type, Type), Type>
             {
-                { (Type.Float, Type.Float), Type.Bool },
-                { (Type.Int, Type.Int), Type.Bool },
-                { (Type.String, Type.String), Type.Bool },
-                { (Type.Float, Type.Int), Type.Bool },
-                { (Type.Int, Type.Float), Type.Bool }
+                { (Type.Float, Type.Float), Type.Float },
+                { (Type.Int, Type.Int), Type.Int },
+                { (Type.String, Type.String), Type.String },
+                { (Type.Float, Type.Int), Type.Float },
+                { (Type.Int, Type.Float), Type.Float },
+                { (Type.String, Type.Int), Type.String  },
+                { (Type.String, Type.Float), Type.String  },
+                { (Type.Float, Type.String), Type.String},
+                { (Type.Date, Type.Date), Type.Date},
+                { (Type.Date, Type.Int), Type.Date}
             };
         }
         public override dynamic Evaluate()
@@ -35,12 +40,17 @@ namespace Compiler.Core.Expressions
 
         public override string Generate()
         {
-            throw new NotImplementedException();
+            return $"{LeftExpression.Generate()} {Token.Lexeme} {RightExpression.Generate()}";
         }
 
-        public override Models.Parser.Type GetExpressionType()
+        public override Type GetExpressionType()
         {
-            throw new NotImplementedException();
+            if (_typeRules.TryGetValue((LeftExpression.GetExpressionType(), RightExpression.GetExpressionType()), out var resultType))
+            {
+                return resultType;
+            }
+
+            throw new ApplicationException($"Cannot perform logical operation on {LeftExpression.GetExpressionType()}, {RightExpression.GetExpressionType()}");
         }
     }
 }
