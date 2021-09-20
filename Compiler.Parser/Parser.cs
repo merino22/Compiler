@@ -56,6 +56,8 @@ namespace Compiler.Parser
                 EnvironmentManager.AddMethod("void" + token.Lexeme, new Id(token
                     , Type.Func), null);
                 Console.WriteLine("function " + token.Lexeme + "(){}");
+                Match(TokenType.LeftParens);
+                Match(TokenType.RightParens);
             }
 
             if (this._lookAhead.TokenType == TokenType.FunctionKeyword ||

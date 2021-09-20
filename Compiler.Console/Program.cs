@@ -16,7 +16,7 @@ namespace Compiler.Console
             var parser = new Parser.Parser(scanner);
             var engine = new CompilerEngine(parser);
             engine.Run();
-            System.Console.WriteLine("success${code}");
+            //System.Console.WriteLine("success${code}");
         }
     }
 }
