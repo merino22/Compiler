@@ -30,7 +30,7 @@ namespace Compiler.Core.Statements
             code += $"function({Token1.Lexeme})";
             code += "\n\t{\n";
             code += $"{Statement.Generate(tabs + 1)}";
-            code += "\t})";
+            code += "\t})\n";
             return code;
         }
     }
