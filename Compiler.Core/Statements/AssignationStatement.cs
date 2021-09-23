@@ -3,6 +3,7 @@ using Compiler.Core.Interfaces;
 using System;
 using Compiler.Core.Models.Parser;
 using Environment = System.Environment;
+using Type = Compiler.Core.Models.Parser.Type;
 
 namespace Compiler.Core.Statements
 {
@@ -31,6 +32,10 @@ namespace Compiler.Core.Statements
 
         public override void ValidateSemantic()
         {
+            if (Id.Type == Type.IntList)
+            {
+                return;
+            }
             if (Id.GetExpressionType() != Expression.GetExpressionType())
             {
                 throw new ApplicationException($"Type {Id.GetExpressionType()} is not assignable to {Expression.GetExpressionType()}");
