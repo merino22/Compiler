@@ -20,6 +20,7 @@ namespace Compiler.Core.Expressions
                 TokenType.FloatConstant => float.Parse(Token.Lexeme),
                 TokenType.DateConstant => DateTime.Parse(Token.Lexeme).ToString("dd/MM/yyyy"),
                 TokenType.BoolKeyword => Boolean.Parse(Token.Lexeme),
+                TokenType.IntListConstant => Int32.Parse(Token.Lexeme),
                 TokenType.StringConstant => Token.Lexeme,
                 _ => throw new NotImplementedException()
             };

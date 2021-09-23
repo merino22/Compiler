@@ -1,27 +1,43 @@
 ﻿class bruh{
-
+class bruh2{
+}
+class bruski{
+}
 void prueba(){
+ListInt lista;
 int w;
-float o;
-int x;
 int xx;
+float o;
+int q;
 int y;
 Date datex;
 string a;
+xx:=5;
+w:=4;
 o:= 5.89;
+Date date;
 datex := 09/12/2021;
-x++;
-x--;
+q++;
+q--;
 a := o + 'hola peter!';
-foreach(x in xx)
-x++;
+foreach(x in lista)
+q++;
+q--;
 while(o >= 10 || x>12)
-x++;
+q++;
+Console.WriteLine();
+Console.ReadLine();
 
 if(x>y && y>10 || xx > 50 && xx < 100)
-    x := 10;
+{
+    int xxx;
+    q := 10;
+    xxx++;
+    xxx++;
+    xxx++;
+}
 else
-    a:= 'adios';
+    q:= 'adios';
 y:=6+2+3+5;
 
 }

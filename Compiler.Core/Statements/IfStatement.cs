@@ -16,9 +16,15 @@ namespace Compiler.Core.Statements
         public Statement Statement { get; }
         public override string Generate(int tabs)
         {
-            var code = GetCodeInit(tabs);
+            var code = "\n";
+            code += GetCodeInit(tabs);
             code += $"if({Expression.Generate()}){{{Environment.NewLine}";
-            code += $"{Statement.Generate(tabs + 1)}}}{Environment.NewLine}";
+            code += $"{Statement.Generate(tabs + 1)}";
+            for (int i = 0; i < tabs; i++)
+            {
+                code += "\t";
+            }
+            code += "}\n";
             return code;
         }
         public override void Interpret()

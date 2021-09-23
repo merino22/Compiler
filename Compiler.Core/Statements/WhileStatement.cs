@@ -33,13 +33,16 @@ namespace Compiler.Core.Statements
 
         public override string Generate(int tabs)
         {
-            var code = GetCodeInit(tabs);
-            code += $"while({Expression.Generate()}){Environment.NewLine}{{";
+            var code = "\n";
+            code += GetCodeInit(tabs);
+            code += $"while({Expression.Generate()}){{{Environment.NewLine}";
+            code += $"{Statement.Generate(tabs + 1)}";
             for (int i = 0; i < tabs; i++)
             {
                 code += "\t";
             }
-            code += $"{Statement.Generate(tabs)}}}{Environment.NewLine}";
+
+            code += "}";
             return code;
         }
     }

@@ -30,7 +30,11 @@ namespace Compiler.Lexer
                 { "float", TokenType.FloatKeyword},
                 { "bool", TokenType.BoolKeyword },
                 { "Date", TokenType.DateTimeKeyword },
-                { "string", TokenType.StringKeyword }
+                { "string", TokenType.StringKeyword },
+                { "ListInt", TokenType.IntListKeyword },
+                { "Console", TokenType.ConsoleKeyword },
+                { "ReadLine", TokenType.ReadLineKeyword },
+                { "WriteLine", TokenType.WriteLineKeyword },
             };
             //this.symbolTable = new List<Symbol>();
         }
@@ -357,7 +361,16 @@ namespace Compiler.Lexer
                             Line = _input.Position.Line,
                             Lexeme = lexeme.ToString()
                         };
-                    case ':':
+                    case '.':
+                        lexeme.Append(currentChar);
+                        return new Token
+                        {
+                            TokenType = TokenType.Decimal,
+                            Column = _input.Position.Column,
+                            Line = _input.Position.Line,
+                            Lexeme = lexeme.ToString()
+                        };
+                        case ':':
                     {
                         lexeme.Append(currentChar);
                         currentChar = GetNextChar();

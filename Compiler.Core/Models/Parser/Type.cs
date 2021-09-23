@@ -14,10 +14,11 @@ namespace Compiler.Core.Models.Parser
             TokenType = tokenType;
         }
 
-        public static Type Int => new Type("int", TokenType.BasicType);
-        public static Type Float => new Type("float", TokenType.BasicType);
-        public static Type Bool => new Type("bool", TokenType.BasicType);
-        public static Type String => new Type("string", TokenType.BasicType);
+        public static Type Int => new Type("int", TokenType.IntConstant);
+        public static Type IntList => new Type("List<int>", TokenType.IntListConstant);
+        public static Type Float => new Type("float", TokenType.FloatConstant);
+        public static Type Bool => new Type("bool", TokenType.BoolConstant);
+        public static Type String => new Type("string", TokenType.StringConstant);
         public static Type Void => new Type("void", TokenType.BasicType);
         public static Type Class => new Type("class", TokenType.ClassKeyword);
         public static Type Func => new Type("func", TokenType.FunctionKeyword);

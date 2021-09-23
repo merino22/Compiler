@@ -1,39 +1,45 @@
 ﻿using System;
 using Compiler.Core.Expressions;
 using Compiler.Core.Interfaces;
+using Compiler.Core.Models.Lexer;
 using Compiler.Core.Models.Parser;
 using Environment = System.Environment;
+using Type = Compiler.Core.Models.Parser.Type;
 
 namespace Compiler.Core.Statements
 {
     public class IncrementStatement : Statement, ISemanticValidation
     {
-        public IncrementStatement(Id id, TypedExpression expression)
+        public Id Id { get; }
+        public Token Token { get; }
+
+        public IncrementStatement(Id id, Token token)
         {
             Id = id;
-            Expression = expression;
+            Token = token;
         }
-
-
-        public Id Id { get; }
-        public TypedExpression Expression { get; }
         public override void Interpret()
         {
-            EnvironmentManager.UpdateVariable(Id.Token.Lexeme, Expression.Evaluate());
+            var symbol = EnvironmentManager.GetSymbolForEvaluation(Id.Token.Lexeme);
+            EnvironmentManager.UpdateVariable(symbol.Id.Token.Lexeme,symbol.Value+1);
         }
 
         public override void ValidateSemantic()
         {
-            if (Id.GetExpressionType() != Expression.Type)
+            switch (Id.Type.Lexeme)
             {
-                throw new ApplicationException($"Type {Id.GetExpressionType()} is not assignable to {Expression.Type}");
+                case "int":
+                case "float":
+                    break;
+                default:
+                    throw new ApplicationException($"Type {Id.Type} cannot be incremented");
             }
         }
 
         public override string Generate(int tabs)
         {
             var code = GetCodeInit(tabs);
-            code += $"{Id.Generate()}++{Environment.NewLine}";
+            code += $"{Id.Token.Lexeme}{Token.Lexeme}\n";
             return code;
         }
     }

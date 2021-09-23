@@ -43,6 +43,13 @@
         ForEachKeyword,
         InKeyword,
         WhileKeyword,
-        FunctionKeyword
+        FunctionKeyword,
+        IntListKeyword,
+        IntListConstant,
+        BoolConstant,
+        ConsoleKeyword,
+        WriteLineKeyword,
+        ReadLineKeyword,
+        Decimal
     }
 }
