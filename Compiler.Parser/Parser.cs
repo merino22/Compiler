@@ -186,7 +186,7 @@ namespace Compiler.Parser
             {
                 EnvironmentManager.AddMethod("Console.WriteLine()",null, null);
                 Match(TokenType.WriteLineKeyword);
-                Console.WriteLine($"Console.Log()");
+                Console.WriteLine($"console.log()");
             }
             else if (_lookAhead.TokenType == TokenType.ReadLineKeyword)
             {
