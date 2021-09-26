@@ -20,7 +20,8 @@ namespace Compiler.Core.Statements
 
         public override string Generate(int tabs)
         {
-            var code = GetCodeInit(tabs);
+            var code = "\n";
+            code += GetCodeInit(tabs);
             code += $"var {Id.Generate()} = {Expression.Generate()}{Environment.NewLine}";
             return code;
         }

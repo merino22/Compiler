@@ -32,7 +32,7 @@ namespace Compiler.Parser
             var block = Block();
             block.ValidateSemantic();
             block.Interpret();
-            var code = block.Generate(1);
+            var code = block.Generate(0);
             System.IO.File.WriteAllText(@"C:\Users\Public\code.js", code);
             Console.WriteLine(code);
             return block;
@@ -44,20 +44,28 @@ namespace Compiler.Parser
                 Match(TokenType.ClassKeyword);
                 var token = this._lookAhead;
                 Match(TokenType.Identifier);
-                EnvironmentManager.AddMethod("class " + token.Lexeme, new Id(token
-                    , Type.Class), null);
-                Console.WriteLine("class " + token.Lexeme +"{}");
+                Match(TokenType.OpenBrace);
+                EnvironmentManager.PushContext();
+                Decls();
+                var statementsClass = Stmts();
+                Match(TokenType.CloseBrace);
+                EnvironmentManager.PopContext();
+                return new ClassStatement(statementsClass, token);
             }
             else if (this._lookAhead.TokenType == TokenType.FunctionKeyword)
             {
                 Match(TokenType.FunctionKeyword);
                 var token = this._lookAhead;
                 Match(TokenType.Identifier);
-                EnvironmentManager.AddMethod("void" + token.Lexeme, new Id(token
-                    , Type.Func), null);
-                Console.WriteLine("function " + token.Lexeme + "(){}");
                 Match(TokenType.LeftParens);
                 Match(TokenType.RightParens);
+                Match(TokenType.OpenBrace);
+                EnvironmentManager.PushContext();
+                Decls();
+                var statementsFunctions = Stmts();
+                Match(TokenType.CloseBrace);
+                EnvironmentManager.PopContext();
+                return new ClassStatement(statementsFunctions, token);
             }
 
             if (this._lookAhead.TokenType == TokenType.FunctionKeyword ||
@@ -172,34 +180,36 @@ namespace Compiler.Parser
                 }
                 case TokenType.ConsoleKeyword:
                     Match(TokenType.ConsoleKeyword);
-                    var token = this._lookAhead;
-                    return ConsoleStatement(token);
+                    return ConsoleStatement();
                 default:
                     return Block();
             }
         }
 
-        private Statement ConsoleStatement(Token token)
+        private Statement ConsoleStatement()
         {
             Match(TokenType.Decimal);
             if (_lookAhead.TokenType == TokenType.WriteLineKeyword)
             {
-                EnvironmentManager.AddMethod("Console.WriteLine()",null, null);
                 Match(TokenType.WriteLineKeyword);
-                Console.WriteLine($"console.log()");
+                Match(TokenType.LeftParens);
+                var token = this._lookAhead;
+                Match(TokenType.Identifier);
+                Match(TokenType.RightParens);
+                Match(TokenType.SemiColon);
+                return new WriteLineStatement(token);
             }
             else if (_lookAhead.TokenType == TokenType.ReadLineKeyword)
             {
-                EnvironmentManager.AddMethod("Console.ReadLine()", null, null);
                 Match(TokenType.ReadLineKeyword);
-                Console.WriteLine($"window.prompt(\"Enter your name: \")");
-
+                Match(TokenType.LeftParens);
+                var token = _lookAhead;
+                Match(TokenType.Identifier);
+                Match(TokenType.RightParens);
+                Match(TokenType.SemiColon);
+                return new ReadLineStatement(token);
             }
-            Match(TokenType.LeftParens);
-            var statement = new ArgumentExpression(token, null,null);
-            Match(TokenType.RightParens);
-            Match(TokenType.SemiColon);
-            return new SequenceStatement(null, null);
+            return null;
         }
         private Statement IncrementStmt(Id id)
         {

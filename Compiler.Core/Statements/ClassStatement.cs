@@ -1,16 +1,16 @@
-﻿using System;
-using Compiler.Core.Interfaces;
+﻿using Compiler.Core.Interfaces;
 using Compiler.Core.Models.Lexer;
-using Compiler.Core.Models.Parser;
 
 namespace Compiler.Core.Statements
 {
-    public class WriteLineStatement: Statement, ISemanticValidation
+    public class ClassStatement: Statement, ISemanticValidation
     {
+        public Statement Statement { get; }
         public Token Token { get; }
 
-        public WriteLineStatement(Token token)
+        public ClassStatement(Statement statement, Token token)
         {
+            Statement = statement;
             Token = token;
         }
         public override void Interpret()
@@ -20,18 +20,15 @@ namespace Compiler.Core.Statements
 
         public override void ValidateSemantic()
         {
-            var symbol = EnvironmentManager.GetSymbolForEvaluation(Token.Lexeme);
-            if (symbol == null)
-            {
-                throw new ApplicationException($"Variable doesn't exist");
-            }
+            Statement?.ValidateSemantic();
         }
 
         public override string Generate(int tabs)
         {
             var code = "\n";
             code += GetCodeInit(tabs);
-            code += $"alert(`You are ${{{Token.Lexeme}}} years old`); ";
+            code += $"class {Token.Lexeme}{{}}";
+            code += Statement?.Generate(tabs+1);
             code += "\n";
             return code;
         }

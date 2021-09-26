@@ -26,8 +26,8 @@ q++;
 q--;
 while(o >= 10 || x>12)
 q++;
-Console.WriteLine();
-Console.ReadLine();
+Console.WriteLine(q);
+Console.ReadLine(q);
 
 if(x>y && y>10 || xx > 50 && xx < 100)
 {
