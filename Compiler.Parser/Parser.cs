@@ -2,6 +2,7 @@
 using Compiler.Core.Interfaces;
 using Compiler.Core.Statements;
 using System;
+using System.Collections.Generic;
 using Compiler.Core.Enum;
 using Compiler.Core.Models.Lexer;
 using Compiler.Core.Models.Parser;
@@ -57,14 +58,27 @@ namespace Compiler.Parser
                     token = this._lookAhead;
                     Match(TokenType.Identifier);
                     Match(TokenType.LeftParens);
+                    EnvironmentManager.PushContext();
+                    var argumentList = new List<Token>();
+                    while (_lookAhead.TokenType==TokenType.Identifier)
+                    {
+                        token = _lookAhead;
+                        argumentList.Add(token);
+                        Match(TokenType.Identifier);
+                        if (_lookAhead.TokenType == TokenType.Comma)
+                        {
+                            Match(TokenType.Comma);
+                        }
+                        var id = new Id(token, Type.Void);
+                        EnvironmentManager.AddVariable(token.Lexeme, id);
+                    }
                     Match(TokenType.RightParens);
                     Match(TokenType.OpenBrace);
-                    EnvironmentManager.PushContext();
                     Decls();
                     var statementsFunctions = Stmts();
                     Match(TokenType.CloseBrace);
                     EnvironmentManager.PopContext();
-                    return new FunctionStatement(statementsFunctions, token);
+                    return new FunctionStatement(statementsFunctions, token, argumentList);
                 default:
                     Match(TokenType.OpenBrace);
                     EnvironmentManager.PushContext();
