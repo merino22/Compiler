@@ -136,7 +136,7 @@ namespace Compiler.Parser
                         expression = Eq();
                         if (tokentype.TokenType == TokenType.Not)
                         {
-                            NotLogic(tokentype,expression as TypedExpression);
+                            expression = NotLogic(tokentype,expression as TypedExpression);
                         }
                         if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                         {

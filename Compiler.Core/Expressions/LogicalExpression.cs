@@ -40,6 +40,10 @@ namespace Compiler.Core.Expressions
 
         public override string Generate()
         {
+            if (Token?.TokenType == TokenType.Not)
+            {
+                return $"{Token?.Lexeme}({LeftExpression?.Generate()})";
+            }
             return $"{LeftExpression?.Generate()} {Token?.Lexeme} {RightExpression?.Generate()}";
         }
 
