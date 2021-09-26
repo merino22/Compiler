@@ -181,7 +181,16 @@ namespace Compiler.Parser
                 {
                     Match(TokenType.WhileKeyword);
                     Match(TokenType.LeftParens);
+                    var tokentype = _lookAhead;
+                    if (tokentype.TokenType == TokenType.Not)
+                    {
+                        Match(TokenType.Not);
+                    }
                     expression = Eq();
+                    if (tokentype.TokenType == TokenType.Not)
+                    {
+                        NotLogic(tokentype, expression as TypedExpression);
+                    }
                     if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                     {
                         Move();
