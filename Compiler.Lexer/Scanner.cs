@@ -195,7 +195,6 @@ namespace Compiler.Lexer
                                     Lexeme = lexeme.ToString()
                                 };
                             default:
-                                lexeme.Append(nextChar);
                                 return new Token
                                 {
                                     TokenType = TokenType.LessThan,
