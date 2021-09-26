@@ -33,7 +33,7 @@ namespace Compiler.Core.Expressions
             {
                 TokenType.And => LeftExpression.Evaluate() && RightExpression.Evaluate(),
                 TokenType.Or => LeftExpression.Evaluate() || RightExpression.Evaluate(),
-                TokenType.Not => LeftExpression.Token.TokenType == TokenType.NotEqual? (dynamic)(LeftExpression.Token.TokenType=TokenType.Equal) : LeftExpression.Token.TokenType = TokenType.NotEqual,
+                TokenType.Not => !LeftExpression.Evaluate(),
                 _ => throw new NotImplementedException()
             };
         }
