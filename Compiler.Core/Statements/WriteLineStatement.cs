@@ -31,7 +31,7 @@ namespace Compiler.Core.Statements
         {
             var code = "\n";
             code += GetCodeInit(tabs);
-            code += $"alert(`You are ${{{Token.Lexeme}}} years old`); ";
+            code += $"alert(`Input entered is: ${{{Token.Lexeme}}}`); ";
             code += "\n";
             return code;
         }
