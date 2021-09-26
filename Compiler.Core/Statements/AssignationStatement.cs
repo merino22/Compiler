@@ -33,7 +33,7 @@ namespace Compiler.Core.Statements
 
         public override void ValidateSemantic()
         {
-            if (Id.Type == Type.IntList)
+            if (Id.Type == Type.IntList || Id.Type== Type.StringList || Id.Type == Type.FloatList || Id.Type == Type.Void)
             {
                 return;
             }

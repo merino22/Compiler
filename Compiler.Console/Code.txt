@@ -4,6 +4,7 @@ class bruh2{
 class bruski{
 }
 void prueba(arg1, arg2){
+arg1 := 1;
 ListInt lista;
 ListString lista1;
 ListFloat lista2;
