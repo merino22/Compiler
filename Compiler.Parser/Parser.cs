@@ -140,8 +140,11 @@ namespace Compiler.Parser
                         }
                         if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                         {
+                            var token = this._lookAhead;
                             Move();
-                            expression = Logic(expression as TypedExpression);
+                            var logicalExpression = Logic();
+                            expression = new LogicalExpression(token, expression as TypedExpression,
+                                logicalExpression as TypedExpression);
                         }
                         Match(TokenType.RightParens);
                         statement1 = Stmt();
@@ -189,12 +192,15 @@ namespace Compiler.Parser
                     expression = Eq();
                     if (tokentype.TokenType == TokenType.Not)
                     {
-                        NotLogic(tokentype, expression as TypedExpression);
+                        expression = NotLogic(tokentype, expression as TypedExpression);
                     }
                     if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                     {
+                        var token = this._lookAhead;
                         Move();
-                        expression = Logic(expression as TypedExpression);
+                        var logicalExpression = Logic();
+                        expression = new LogicalExpression(token, expression as TypedExpression,
+                            logicalExpression as TypedExpression);
                     }
                     Match(TokenType.RightParens);
                     statement1 = Stmt();
@@ -282,19 +288,25 @@ namespace Compiler.Parser
             return expression;
         }
 
-        private Expression Logic(TypedExpression expr)
+        private Expression Logic()
         {
+
+            var token = _lookAhead;
+            if (token.TokenType == TokenType.Not)
+            {
+                Match(TokenType.Not);
+            }
             var expression = Rel();
+            if (token.TokenType == TokenType.Not)
+            {
+                expression = NotLogic(token, expression as TypedExpression);
+            }
             if (_lookAhead.TokenType == TokenType.And
              || _lookAhead.TokenType == TokenType.Or)
             {
-                var token = _lookAhead;
+                token = _lookAhead;
                 Move();
-                if (expr != null)
-                {
-                    expression = expr;
-                }
-                expression = new LogicalExpression(token, expression as TypedExpression, Logic(null) as TypedExpression);
+                expression = new LogicalExpression(token, expression as TypedExpression, Logic() as TypedExpression);
             }
             return expression;
         }

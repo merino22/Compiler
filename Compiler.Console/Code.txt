@@ -21,6 +21,17 @@ o:= 5.89;
 Date date;
 datex := 09/12/2021;
 lista := 1;
+{
+    {
+        {
+            {
+                int x;
+                x := 10;
+                Console.WriteLine(x);
+            }
+        }
+    }
+}
 q++;
 q--;
 a := o + 'hola peter!';
@@ -32,7 +43,7 @@ q++;
 Console.WriteLine(q);
 Console.ReadLine(q);
 
-if(x>y && y>10 || xx > 50 && xx < 100 && xx<200)
+if( ! x>y && ! y>10 || ! xx > 50 && ! xx < 100 && xx<200)
 {
     int xxx;
     q := 10;
