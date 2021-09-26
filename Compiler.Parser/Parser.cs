@@ -311,7 +311,7 @@ namespace Compiler.Parser
             return expression;
         }
 
-        private Expression NotLogic(Token token, TypedExpression expr)
+        private Expression NotLogic(Token token, Expression expr)
         {
             var expression = expr;
             return new LogicalExpression(token, expression as TypedExpression, null);
