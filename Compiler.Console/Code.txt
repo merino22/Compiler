@@ -5,6 +5,8 @@ class bruski{
 }
 void prueba(arg1, arg2){
 ListInt lista;
+ListString lista1;
+ListFloat lista2;
 int w;
 int xx;
 float o;

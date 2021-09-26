@@ -181,7 +181,16 @@ namespace Compiler.Parser
                 {
                     Match(TokenType.WhileKeyword);
                     Match(TokenType.LeftParens);
+                    var tokentype = _lookAhead;
+                    if (tokentype.TokenType == TokenType.Not)
+                    {
+                        Match(TokenType.Not);
+                    }
                     expression = Eq();
+                    if (tokentype.TokenType == TokenType.Not)
+                    {
+                        NotLogic(tokentype, expression as TypedExpression);
+                    }
                     if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                     {
                         Move();
@@ -412,7 +421,9 @@ namespace Compiler.Parser
                 this._lookAhead.TokenType == TokenType.FloatKeyword ||
                 this._lookAhead.TokenType == TokenType.StringKeyword ||
                 this._lookAhead.TokenType == TokenType.DateTimeKeyword ||
-                this._lookAhead.TokenType == TokenType.IntListKeyword)
+                this._lookAhead.TokenType == TokenType.IntListKeyword ||
+                this._lookAhead.TokenType == TokenType.FloatListKeyword ||
+                this._lookAhead.TokenType == TokenType.StringListKeyword) 
             {
                 Decl();
                 Decls();
@@ -461,6 +472,22 @@ namespace Compiler.Parser
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, Type.IntList);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
+                    break;
+                case TokenType.FloatListKeyword:
+                    Match(TokenType.FloatListKeyword);
+                    token = this._lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.SemiColon);
+                    id = new Id(token, Type.FloatList);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
+                    break;
+                case TokenType.StringListKeyword:
+                    Match(TokenType.StringListKeyword);
+                    token = this._lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.SemiColon);
+                    id = new Id(token, Type.StringList);
                     EnvironmentManager.AddVariable(token.Lexeme, id);
                     break;
                 default:

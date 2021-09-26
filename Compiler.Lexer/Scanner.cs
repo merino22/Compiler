@@ -32,6 +32,8 @@ namespace Compiler.Lexer
                 { "Date", TokenType.DateTimeKeyword },
                 { "string", TokenType.StringKeyword },
                 { "ListInt", TokenType.IntListKeyword },
+                { "ListString", TokenType.StringListKeyword },
+                { "ListFloat", TokenType.FloatListKeyword },
                 { "Console", TokenType.ConsoleKeyword },
                 { "ReadLine", TokenType.ReadLineKeyword },
                 { "WriteLine", TokenType.WriteLineKeyword },
