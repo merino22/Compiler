@@ -39,47 +39,41 @@ namespace Compiler.Parser
         }
         private Statement Block()
         {
-            if (this._lookAhead.TokenType == TokenType.ClassKeyword)
+            switch (this._lookAhead.TokenType)
             {
-                Match(TokenType.ClassKeyword);
-                var token = this._lookAhead;
-                Match(TokenType.Identifier);
-                Match(TokenType.OpenBrace);
-                EnvironmentManager.PushContext();
-                Decls();
-                var statementsClass = Stmts();
-                Match(TokenType.CloseBrace);
-                EnvironmentManager.PopContext();
-                return new ClassStatement(statementsClass, token);
+                case TokenType.ClassKeyword:
+                    Match(TokenType.ClassKeyword);
+                    var token = this._lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.OpenBrace);
+                    EnvironmentManager.PushContext();
+                    Decls();
+                    var statementsClass = Stmts();
+                    Match(TokenType.CloseBrace);
+                    EnvironmentManager.PopContext();
+                    return new ClassStatement(statementsClass, token);
+                case TokenType.FunctionKeyword:
+                    Match(TokenType.FunctionKeyword);
+                    token = this._lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.LeftParens);
+                    Match(TokenType.RightParens);
+                    Match(TokenType.OpenBrace);
+                    EnvironmentManager.PushContext();
+                    Decls();
+                    var statementsFunctions = Stmts();
+                    Match(TokenType.CloseBrace);
+                    EnvironmentManager.PopContext();
+                    return new FunctionStatement(statementsFunctions, token);
+                default:
+                    Match(TokenType.OpenBrace);
+                    EnvironmentManager.PushContext();
+                    Decls();
+                    var statements = Stmts();
+                    Match(TokenType.CloseBrace);
+                    EnvironmentManager.PopContext();
+                    return statements;
             }
-            else if (this._lookAhead.TokenType == TokenType.FunctionKeyword)
-            {
-                Match(TokenType.FunctionKeyword);
-                var token = this._lookAhead;
-                Match(TokenType.Identifier);
-                Match(TokenType.LeftParens);
-                Match(TokenType.RightParens);
-                Match(TokenType.OpenBrace);
-                EnvironmentManager.PushContext();
-                Decls();
-                var statementsFunctions = Stmts();
-                Match(TokenType.CloseBrace);
-                EnvironmentManager.PopContext();
-                return new ClassStatement(statementsFunctions, token);
-            }
-
-            if (this._lookAhead.TokenType == TokenType.FunctionKeyword ||
-                this._lookAhead.TokenType == TokenType.ClassKeyword )
-            {
-                return Block();
-            }
-            Match(TokenType.OpenBrace);
-            EnvironmentManager.PushContext();
-            Decls();
-            var statements = Stmts();
-            Match(TokenType.CloseBrace);
-            EnvironmentManager.PopContext();
-            return statements;
         }
 
         private Statement Stmts()
