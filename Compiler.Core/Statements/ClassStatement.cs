@@ -28,7 +28,7 @@ namespace Compiler.Core.Statements
             var code = "\n";
             code += GetCodeInit(tabs);
             code += $"class {Token.Lexeme}{{}}";
-            code += Statement?.Generate(tabs+1);
+            code += Statement?.Generate(tabs);
             code += "\n";
             return code;
         }
