@@ -33,7 +33,7 @@ namespace Compiler.Core.Expressions
             {
                 TokenType.And => LeftExpression.Evaluate() && RightExpression.Evaluate(),
                 TokenType.Or => LeftExpression.Evaluate() || RightExpression.Evaluate(),
-                TokenType.Not => !(LeftExpression.Evaluate() && RightExpression.Evaluate()),
+                TokenType.Not => LeftExpression.Token.TokenType == TokenType.NotEqual? (dynamic)(LeftExpression.Token.TokenType=TokenType.Equal) : LeftExpression.Token.TokenType = TokenType.NotEqual,
                 _ => throw new NotImplementedException()
             };
         }
@@ -46,8 +46,6 @@ namespace Compiler.Core.Expressions
         public override Type GetExpressionType()
         {
             return Type.Bool;
-
-            throw new ApplicationException($"Cannot perform logical operation on {LeftExpression.GetExpressionType()}, {RightExpression.GetExpressionType()}");
         }
     }
 }

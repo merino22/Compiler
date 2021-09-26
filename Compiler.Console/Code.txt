@@ -29,7 +29,7 @@ q++;
 Console.WriteLine(q);
 Console.ReadLine(q);
 
-if(x>y && y>10 || xx > 50 && xx < 100)
+if(x>y && y>10 || xx > 50 && xx < 100 && xx<200)
 {
     int xxx;
     q := 10;
@@ -41,6 +41,9 @@ else
     q:= 'adios';
 y:=6+2+3+5;
 
+if(! x>1 ){
+    x++;
+}
 }
 }
 

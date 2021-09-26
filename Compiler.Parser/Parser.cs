@@ -128,12 +128,17 @@ namespace Compiler.Parser
                     {
                         Match(TokenType.IfKeyword);
                         Match(TokenType.LeftParens);
-                        if(this._lookAhead.TokenType == TokenType.Not)
+                        var tokentype = _lookAhead;
+                        if (tokentype.TokenType== TokenType.Not)
                         {
-                            Logic(null);
+                            Match(TokenType.Not);
                         }
                         expression = Eq();
-                        if(this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
+                        if (tokentype.TokenType == TokenType.Not)
+                        {
+                            NotLogic(tokentype,expression as TypedExpression);
+                        }
+                        if (this._lookAhead.TokenType == TokenType.And || this._lookAhead.TokenType == TokenType.Or)
                         {
                             Move();
                             expression = Logic(expression as TypedExpression);
@@ -282,13 +287,13 @@ namespace Compiler.Parser
                 }
                 expression = new LogicalExpression(token, expression as TypedExpression, Logic(null) as TypedExpression);
             }
-            if (_lookAhead.TokenType == TokenType.Not)
-            {
-                var token = _lookAhead;
-                Move();
-                expression = new LogicalExpression(token, expression as TypedExpression, null);
-            }
             return expression;
+        }
+
+        private Expression NotLogic(Token token, TypedExpression expr)
+        {
+            var expression = expr;
+            return new LogicalExpression(token, expression as TypedExpression, null);
         }
 
         private Expression Expr()
